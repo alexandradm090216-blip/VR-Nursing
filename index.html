@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VR Nursing Lab · Simulación clínica inmersiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%231E5B38'/%3E%3Cpath d='M12 4l7 3v5c0 4.2-3 7.4-7 8.4-4-1-7-4.2-7-8.4V7l7-3z' fill='none' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M9 12l2 2 4-4' fill='none' stroke='white' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="toggleSidebar(false)"></div>
+<div class="shell">
+
+ <!-- ========== SIDEBAR ========== -->
+ <aside class="sidebar" id="sidebar">
+ <div class="brand">
+ <div class="brand-mark">
+ <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L3 6v6c0 5 4 8.5 9 10 5-1.5 9-5 9-10V6l-9-4z" stroke="#fff" stroke-width="1.6"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+ </div>
+ <div class="brand-text">VR Nursing Lab<small>SIMULACIÓN CLÍNICA · XR</small></div>
+ </div>
+ <nav class="nav" id="navList"></nav>
+ <div class="sidebar-foot">
+ <div class="progress-mini">Progreso general <span id="sideProgressPct">0%</span></div>
+ <div class="progress-track"><div class="progress-fill" id="sideProgressBar" style="width:0%"></div></div>
+ </div>
+ </aside>
+
+ <!-- ========== MAIN ========== -->
+ <main class="main">
+ <div class="topbar">
+ <div style="display:flex;align-items:center;gap:10px;">
+ <button class="menu-toggle" onclick="toggleSidebar()">Menú</button>
+ <span class="topbar-title" id="topbarTitle">INICIO</span>
+ <div class="topbar-logo-left"><img src="assets/img/udec-logo.png" alt="Universidad de Cundinamarca"></div>
+ </div>
+ <div class="topbar-actions">
+ <div class="topbar-logo-right"><img src="assets/img/fucs-logo.png" alt="Universidad FUCS"></div>
+ <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">Oscuro</button>
+ </div>
+ </div>
+
+ <!-- ---------- HOME ---------- -->
+ <section class="view active" data-view="home">
+ <div class="hero">
+ <div class="hero-eyebrow"><span class="dot"></span>PLATAFORMA DE SIMULACIÓN · PREPARACIÓN PARA REALIDAD VIRTUAL</div>
+ <h1>VR Nursing Lab</h1>
+ <p class="lead">Simulación inmersiva para el aprendizaje de procedimientos básicos de enfermería. Explora la anatomía, practica la técnica paso a paso y toma decisiones en escenarios clínicos antes de entrar al entorno VR.</p>
+ <div class="hero-actions">
+ <button class="btn btn-primary" onclick="go('dashboard')">Iniciar entrenamiento</button>
+ <button class="btn btn-ghost" onclick="go('modulos')">Explorar procedimientos</button>
+ <button class="btn btn-ghost" onclick="go('evaluacion')">Evaluación</button>
+ <button class="btn btn-ghost" onclick="go('vr')">Modo VR</button>
+ </div>
+ </div>
+
+ <div class="sequence">
+ <b>Explorar</b><span class="arrow">→</span><b>Aprender</b><span class="arrow">→</span><b>Practicar</b><span class="arrow">→</span><b>Simular</b><span class="arrow">→</span><b>Evaluar</b><span class="arrow">→</span><b>Retroalimentar</b><span class="arrow">→</span><b>Repetir</b>
+ </div>
+
+ <div class="section-head"><h2>Módulos disponibles</h2><span class="hint">6 procedimientos · nivel progresivo</span></div>
+ <div class="grid grid-3" id="homeModuleGrid"></div>
+
+ <div class="section-head"><h2>Por qué simular antes de la clínica</h2></div>
+ <div class="grid grid-3">
+ <div class="card"><div class="mc-icon">F</div><h3>Fundamento antes que técnica</h3><p>Cada procedimiento inicia por su objetivo y su base fisiológica, no solo por los pasos mecánicos.</p></div>
+ <div class="card"><div class="mc-icon">D</div><h3>Decisiones, no solo lectura</h3><p>El estudiante selecciona, ordena y decide dentro de escenarios interactivos con retroalimentación inmediata.</p></div>
+ <div class="card"><div class="mc-icon">P</div><h3>Puente hacia XR</h3><p>La interfaz está preparada para conectarse con Unity y XR Interaction Toolkit en una segunda fase inmersiva.</p></div>
+ </div>
+ </section>
+
+ <!-- ---------- DASHBOARD ---------- -->
+ <section class="view" data-view="dashboard">
+ <div class="mod-header">
+ <div><h1>Mi entrenamiento</h1><p class="mh-sub">Resumen de tu avance, precisión y tiempo de práctica en la plataforma.</p></div>
+ </div>
+
+ <div class="grid grid-4" style="margin-top:20px;">
+ <div class="stat"><div class="stat-num" id="statCompleted">0/6</div><div class="stat-label">PROCEDIMIENTOS COMPLETADOS</div></div>
+ <div class="stat"><div class="stat-num" id="statScore">—</div><div class="stat-label">PUNTUACIÓN PROMEDIO</div></div>
+ <div class="stat"><div class="stat-num" id="statErrors">0</div><div class="stat-label">ERRORES REGISTRADOS</div></div>
+ <div class="stat"><div class="stat-num" id="statTime">0 min</div><div class="stat-label">TIEMPO DE PRÁCTICA</div></div>
+ </div>
+
+ <div class="block">
+ <h3>Progreso de entrenamiento</h3>
+ <div class="pbar" style="margin-top:10px;"><span id="dashProgressBar" style="width:0%"></span></div>
+ <p class="txt" style="margin-top:8px;" id="dashProgressLabel">0% completado</p>
+ </div>
+
+ <div class="block">
+ <h3>Nivel de competencia</h3>
+ <div class="level-track" id="levelTrack"></div>
+ </div>
+
+ <div class="section-head"><h2>Continuar entrenamiento</h2></div>
+ <div class="grid grid-3" id="dashModuleGrid"></div>
+ </section>
+
+ <!-- ---------- MODULOS (index) ---------- -->
+ <section class="view" data-view="modulos">
+ <div class="mod-header"><div><h1>Procedimientos de enfermería</h1><p class="mh-sub">Selecciona un procedimiento para explorar su fundamento, materiales, técnica y evaluación.</p></div></div>
+ <div class="grid grid-3" style="margin-top:22px;" id="modulosGrid"></div>
+ </section>
+
+ <!-- ---------- VITAL SIGNS ---------- -->
+ <section class="view" data-view="signos">
+ <div class="crumb"><button onclick="go('modulos')">← Procedimientos</button> / Signos vitales</div>
+ <div class="mod-header">
+ <div>
+ <h1>Signos vitales</h1>
+ <p class="mh-sub">Valoración de temperatura, frecuencia cardíaca, frecuencia respiratoria, presión arterial, saturación de oxígeno y dolor como quinto signo vital.</p>
+ </div>
+ </div>
+ <div class="pill-row" id="vsPills"></div>
+ <div id="vsContent"></div>
+ </section>
+
+ <!-- ---------- VENOUS CATHETERIZATION ---------- -->
+ <section class="view" data-view="canalizacion">
+ <div class="crumb"><button onclick="go('modulos')">← Procedimientos</button> / Canalización venosa periférica</div>
+ <div class="mod-header">
+ <div><h1>Canalización venosa periférica</h1><p class="mh-sub">Anatomía venosa, materiales, preparación, secuencia interactiva e identificación de errores.</p></div>
+ </div>
+
+ <div class="block">
+ <div class="subhead">1 · ANATOMÍA INTERACTIVA</div>
+ <h3>Selecciona una estructura venosa</h3>
+ <div class="anatomy-wrap" id="ivAnatomyWrap"></div>
+ </div>
+
+ <div class="block">
+ <div class="subhead">2 · MATERIALES</div>
+ <h3>Equipo necesario</h3>
+ <div class="mat-grid" id="ivMaterials"></div>
+ </div>
+
+ <div class="block">
+ <div class="subhead">3 · PREPARACIÓN</div>
+ <h3>Antes de iniciar</h3>
+ <div class="err-grid" id="ivPrep" style="margin-top:12px;"></div>
+ </div>
+
+ <div class="block">
+ <div class="subhead">4 · PROCEDIMIENTO INTERACTIVO</div>
+ <h3>Ordena la secuencia correcta</h3>
+ <p class="txt">Selecciona cada acción en el orden en que debe realizarse. Si te equivocas, podrás reiniciar el intento.</p>
+ <div id="ivOrderChallenge"></div>
+ </div>
+
+ <div class="block">
+ <div class="subhead">5 · IDENTIFICACIÓN DE ERRORES</div>
+ <h3>¿Qué salió mal en esta escena?</h3>
+ <div id="ivErrorChallenge"></div>
+ </div>
+
+ <div class="disclaimer"><b>Nota académica.</b> Este contenido tiene finalidad educativa y debe contrastarse con los protocolos institucionales, guías clínicas y normativa vigente antes de su aplicación en pacientes reales.</div>
+ </section>
+
+ <!-- ---------- INJECTIONS ---------- -->
+ <section class="view" data-view="inyecciones">
+ <div class="crumb"><button onclick="go('modulos')">← Procedimientos</button> / Administración de medicamentos por vía parenteral</div>
+ <div class="mod-header">
+ <div><h1>Administración por vía parenteral</h1><p class="mh-sub">Vías intramuscular, subcutánea, intradérmica e intravenosa: fundamentos, sitios, técnica y simulación.</p></div>
+ </div>
+ <div class="pill-row" id="injPills"></div>
+ <div id="injContent"></div>
+
+ <div class="block">
+ <div class="subhead">SIMULADOR DE ADMINISTRACIÓN</div>
+ <h3>Practica la secuencia completa de administración segura</h3>
+ <div id="injSimulator"></div>
+ </div>
+
+ <div class="disclaimer"><b>Nota académica.</b> Las técnicas se presentan como contenido educativo basado en protocolos generales. Cuando existan diferencias según institución, medicamento o guía clínica, deben seguirse los protocolos institucionales vigentes. Esta plataforma no sustituye el entrenamiento clínico supervisado.</div>
+ </section>
+
+ <!-- ---------- ANATOMY EXPLORER ---------- -->
+ <section class="view" data-view="anatomia">
+ <div class="mod-header"><div><h1>Anatomía interactiva</h1><p class="mh-sub">Explora los sitios anatómicos relevantes para inyecciones intramusculares, subcutáneas e intradérmicas.</p></div></div>
+
+ <div class="model3d-card">
+  <div class="m3-body">
+ <h3>Modelo muscular 3D completo (BioDigital Human)</h3>
+ <p>Para explorar el sistema muscular completo en 3D, abre el visor anatómico de BioDigital Human en una pestaña nueva. Al ser un servicio externo, no puede incrustarse dentro de esta plataforma, pero es un buen complemento antes de practicar aquí la selección de sitios de inyección.</p>
+ </div>
+ <a class="btn btn-solid btn-sm" href="https://human.biodigital.com/view?id=production/maleAdult/male_complete_anatomy_20&amp;lang=en&amp;ref=share" target="_blank" rel="noopener">Abrir modelo 3D ↗</a>
+ </div>
+
+ <div class="anatomy-wrap" id="anatExplorerWrap" style="margin-top:20px;"></div>
+ </section>
+
+ <!-- ---------- PATIENT SAFETY ---------- -->
+ <section class="view" data-view="seguridad">
+ <div class="mod-header"><div><h1>Seguridad del paciente</h1><p class="mh-sub">Principios transversales a todos los procedimientos de enfermería.</p></div></div>
+ <div class="grid grid-3" style="margin-top:20px;" id="safetyGrid"></div>
+ <div class="block">
+ <h3>Escenario: identifica el riesgo</h3>
+ <div id="safetyScenario"></div>
+ </div>
+ </section>
+
+ <!-- ---------- VR SIMULATION ---------- -->
+ <section class="view" data-view="vr">
+ <div class="mod-header"><div><h1>VR Simulation</h1><p class="mh-sub">Esta plataforma web funciona como preparación teórica y procedimental antes de una experiencia inmersiva en realidad virtual.</p></div></div>
+
+ <div id="vrEntry">
+ <div class="card" style="margin-top:18px;max-width:640px;">
+ <h3 style="margin-bottom:10px;">Requisitos antes de entrar al entorno VR</h3>
+ <p class="txt">Se recomienda haber completado al menos el módulo de <b>Signos vitales</b> y revisado la sección de <b>Seguridad del paciente</b> antes de practicar en el entorno inmersivo.</p>
+ <button class="btn btn-solid" style="margin-top:16px;" onclick="startVRTransition()">Entrar al entorno VR</button>
+ </div>
+ </div>
+
+ <div id="vrLoading" style="display:none;">
+ <div class="vr-loading">
+ <div class="vr-spinner"></div>
+ <h3>Preparando entorno de simulación...</h3>
+ <p class="txt" style="margin-top:8px;">Cargando activos, colocando al paciente virtual y calibrando el escenario.</p>
+ </div>
+ </div>
+
+ <div id="vrScenarios" style="display:none;">
+ <div class="section-head"><h2>Seleccione escenario</h2></div>
+ <div class="grid grid-2" id="vrScenarioGrid"></div>
+ <div class="card" style="margin-top:20px;">
+ <h3 style="font-size:15px;">Arquitectura de integración</h3>
+ <p class="txt" style="margin-top:8px;">Este panel está preparado para conectarse con <b style="color:var(--blue);">Unity + XR Interaction Toolkit</b>, transmitiendo el escenario y el caso clínico seleccionados como parámetros de sesión hacia el visor Meta Quest.</p>
+ </div>
+ </div>
+ </section>
+
+ <!-- ---------- CLINICAL SIMULATION ---------- -->
+ <section class="view" data-view="simulacion">
+ <div class="mod-header"><div><h1>Simulación clínica</h1><p class="mh-sub">Toma decisiones en un caso completo. La plataforma registrará tiempo, acciones y errores para tu reporte final.</p></div></div>
+ <div id="simRoot"></div>
+ </section>
+
+ <!-- ---------- EVALUATION ---------- -->
+ <section class="view" data-view="evaluacion">
+ <div class="mod-header"><div><h1>Evaluación</h1><p class="mh-sub">Preguntas de selección múltiple, verdadero/falso, ordenamiento, identificación anatómica y casos clínicos.</p></div></div>
+ <div id="evalRoot"></div>
+ </section>
+
+ <!-- ---------- PROGRESS ---------- -->
+ <section class="view" data-view="progreso">
+ <div class="mod-header"><div><h1>Mi progreso</h1><p class="mh-sub">Seguimiento de tu avance por procedimiento y por nivel de competencia.</p></div></div>
+ <div class="block">
+ <div id="progressBars"></div>
+ </div>
+ <div class="block">
+ <h3>Niveles de competencia</h3>
+ <div class="level-track" id="levelTrack2"></div>
+ </div>
+ </section>
+
+ <!-- ---------- TEACHER PANEL ---------- -->
+ <section class="view" data-view="docente">
+ <div class="mod-header"><div><h1>Panel del docente</h1><p class="mh-sub">Vista agregada de estudiantes simulados para seguimiento del curso. Datos de ejemplo con fines demostrativos.</p></div></div>
+
+ <div class="grid grid-4" style="margin-top:18px;">
+ <div class="stat"><div class="stat-num">28</div><div class="stat-label">ESTUDIANTES ACTIVOS</div></div>
+ <div class="stat"><div class="stat-num">76%</div><div class="stat-label">PROCEDIMIENTOS COMPLETADOS</div></div>
+ <div class="stat"><div class="stat-num">8.1</div><div class="stat-label">PROMEDIO DE EVALUACIÓN</div></div>
+ <div class="stat"><div class="stat-num">3.4h</div><div class="stat-label">TIEMPO PROMEDIO DE PRÁCTICA</div></div>
+ </div>
+
+ <div class="block">
+ <h3>Rendimiento por procedimiento</h3>
+ <div id="teacherBars" style="margin-top:16px;"></div>
+ </div>
+
+ <div class="block">
+ <h3>Estudiantes</h3>
+ <div class="scroll-x">
+ <table class="roster">
+ <thead><tr><th>Estudiante</th><th>Módulos completados</th><th>Errores frecuentes</th><th>Evaluación</th><th>Tiempo de práctica</th></tr></thead>
+ <tbody id="rosterBody"></tbody>
+ </table>
+ </div>
+ </div>
+ </section>
+
+ <!-- ---------- CONFIG ---------- -->
+ <section class="view" data-view="config">
+ <div class="mod-header"><div><h1>Configuración</h1><p class="mh-sub">Preferencias de la plataforma para este dispositivo.</p></div></div>
+ <div class="card" style="max-width:520px;margin-top:18px;">
+ <h3 style="margin-bottom:14px;">Apariencia</h3>
+ <div style="display:flex;gap:10px;">
+ <button class="btn btn-outline btn-sm" onclick="setTheme('light')">Claro</button>
+ <button class="btn btn-outline btn-sm" onclick="setTheme('dark')">Oscuro</button>
+ <button class="btn btn-outline btn-sm" onclick="setTheme('auto')">Automático</button>
+ </div>
+ </div>
+ <div class="card" style="max-width:520px;margin-top:16px;">
+ <h3 style="margin-bottom:10px;">Reiniciar progreso</h3>
+ <p class="txt" style="margin-bottom:14px;">Esto borrará tu progreso de entrenamiento guardado en este dispositivo.</p>
+ <button class="btn btn-outline btn-sm" onclick="resetProgress()" style="border-color:var(--red);color:var(--red);">Reiniciar todo el progreso</button>
+ </div>
+
+ <div class="card dev-guide" style="margin-top:16px;">
+ <h3 style="margin-bottom:4px;">Guía para ampliar la plataforma</h3>
+ <p class="txt">Esta página es un único archivo HTML autocontenido: todo el contenido (módulos, preguntas, casos) vive en objetos de JavaScript cerca del inicio del bloque <code>&lt;script&gt;</code>, y el progreso se guarda en el navegador con <code>localStorage</code> para que el panel y la barra lateral reflejen el avance entre sesiones sin necesidad de un servidor.</p>
+
+ <div class="dg-item">
+ <h4>1 &middot; Agregar un nuevo procedimiento</h4>
+ <p class="txt">Cada procedimiento tiene dos partes: una entrada en el arreglo <code>MODULES</code> (la tarjeta que se ve en Inicio y en Módulos) y un objeto de datos con su contenido clínico, siguiendo el mismo patrón que <code>VITAL_SIGNS</code> (para procedimientos con varios sub-temas) o <code>INJ</code> (para vías/variantes de un mismo procedimiento).</p>
+ <pre>// 1) Tarjeta del módulo
+MODULES.push({
+  id:'sondaje', ic:'\ud83e\uddfb', title:'Sondaje vesical',
+  desc:'Colocación de sonda vesical en paciente adulto.',
+  level:'Intermedio', view:'sondaje'
+});
+
+// 2) Contenido clínico (mismo patrón que VITAL_SIGNS)
+const SONDAJE = {
+  objetivo:'...', fundamento:'...',
+  materiales:[['\ud83e\uddfa','Sonda Foley'], ['\ud83e\udde4','Guantes est\u00e9riles']],
+  prep:['Identificar al paciente', 'Higiene de manos', '...'],
+  pasos:[{t:'Paso 1', b:'Descripci\u00f3n...'}],
+  errores:['Error frecuente 1', 'Error frecuente 2'],
+  caso:{ texto:'...', vitals:[['PA','120/80','mmHg']],
+         pregunta:'...', opciones:['A','B','C','D'],
+         correcta:1, explicacion:'...' }
+};</pre>
+ <p class="txt">Después necesitas: (a) agregar <code>sondaje:0</code> al objeto <code>progress</code> dentro de <code>DEFAULT_STATE</code> para que el nuevo módulo tenga seguimiento propio, (b) crear una vista <code>&lt;section class="view" data-view="sondaje"&gt;</code> en el HTML con la misma estructura que la de Signos vitales, (c) agregar su entrada en el arreglo <code>NAV</code> para que aparezca en el menú lateral, y (d) escribir una función <code>renderSondaje()</code> que pinte el contenido y llamarla una vez dentro de <code>initAll()</code>.</p>
+ </div>
+
+ <div class="dg-item">
+ <h4>2 &middot; Reemplazar íconos por imágenes o ilustraciones propias</h4>
+ <p class="txt">Hoy los materiales, tarjetas y anatomía usan emoji (<code>mi-ic</code>, <code>mc-icon</code>) e ilustraciones SVG esquemáticas para que el archivo sea autónomo y liviano. Para usar tus propias imágenes sin depender de una conexión externa (los archivos publicados solo cargan scripts y fuentes de un pequeño listado de proveedores, no imágenes remotas), conviértelas a Base64 e incrústalas directamente:</p>
+ <pre>&lt;div class="mat-item"&gt;
+  &lt;img src="data:image/png;base64,AAAA..." alt="Sonda Foley" style="width:36px;height:36px;object-fit:contain;"&gt;
+  &lt;div class="mi-name"&gt;Sonda Foley&lt;/div&gt;
+&lt;/div&gt;</pre>
+ <p class="txt">Para la anatomía interactiva (venas, sitios de inyección), puedes sustituir el <code>&lt;svg&gt;</code> esquemático por una ilustración de fondo en Base64 dentro de un contenedor, y mantener los <code>&lt;circle class="anat-point"&gt;</code> superpuestos con coordenadas ajustadas a tu imagen, para conservar la interacción de clic y selección.</p>
+ </div>
+
+ <div class="dg-item">
+ <h4>3 &middot; Conectar con Unity + XR Interaction Toolkit (Meta Quest)</h4>
+ <p class="txt">La sección VR ya simula el flujo completo (transición &rarr; selección de escenario) de forma local. El punto de integración real es la función <code>pickVRScenario(name)</code>: hoy solo muestra una alerta, pero es donde enviarías el escenario y el caso clínico seleccionados como parámetros de sesión hacia el visor.</p>
+ <pre>function pickVRScenario(name){
+  const sessionParams = {
+    scenario: name,
+    caseId: 'canalizacion_iv_01',
+    studentProgress: STATE.progress,
+    level: overallProgressPct()
+  };
+  // Opción A: WebSocket a un servidor puente que Unity escucha
+  const ws = new WebSocket('wss://tu-servidor-puente/xr-session');
+  ws.onopen = () =&gt; ws.send(JSON.stringify(sessionParams));
+
+  // Opción B: deep link a una app nativa instalada en el Quest
+  // window.location.href = 'vrnursinglab://start?scenario=' + encodeURIComponent(name);
+}</pre>
+ <p class="txt">Del lado de Unity, el proyecto recibiría estos parámetros con el <b>XR Interaction Toolkit</b> para instanciar el escenario correspondiente (sala de procedimientos, habitación del paciente, urgencias, hospitalización) y cargar el mismo caso clínico que el estudiante vio en la web, de modo que la experiencia inmersiva continúe exactamente donde la dejó en el navegador.</p>
+ </div>
+ </div>
+ </section>
+
+ </main>
+</div>
+
+<footer class="app-footer">
+ <p>VR Nursing Lab &middot; Plataforma educativa de simulación en enfermería</p>
+ <p class="af-authors">Erika Alexandra Barrera Blanco &middot; Gina Marcela Alfonso Inchapi&eacute;</p>
+ <p>Universidad de Cundinamarca &middot; Universidad FUCS</p>
+</footer>
+
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
