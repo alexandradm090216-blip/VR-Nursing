@@ -174,10 +174,10 @@ const VITAL_SIGNS = {
 
 /* ---- IV catheterization data ---- */
 const IV_VEINS = [
-  {id:'cefalica', name:'Vena cefálica', cx:150, cy:150, info:'Ubicada en la cara lateral del antebrazo y brazo. De calibre adecuado y fácil acceso, aunque más móvil que otras venas del pliegue.'},
-  {id:'basilica', name:'Vena basílica', cx:230, cy:230, info:'Discurre por la cara medial del antebrazo. De buen calibre, pero más próxima a estructuras nerviosas, por lo que requiere especial cuidado.'},
-  {id:'mediana', name:'Vena mediana cubital', cx:190, cy:190, info:'Ubicada en el pliegue del codo, conecta la vena cefálica con la basílica. Frecuentemente utilizada por su accesibilidad y calibre, aunque cercana a la articulación.'},
-  {id:'dorsal', name:'Red venosa dorsal', cx:150, cy:330, info:'Red venosa visible en el dorso de la mano. Útil en canalizaciones distales, aunque de menor calibre y más sensible al dolor.'},
+  {id:'cefalica', name:'Vena cefálica', cx:638, cy:272, info:'Ubicada en la cara lateral del antebrazo y brazo. De calibre adecuado y fácil acceso, aunque más móvil que otras venas del pliegue.'},
+  {id:'basilica', name:'Vena basílica', cx:448, cy:266, info:'Discurre por la cara medial del antebrazo. De buen calibre, pero más próxima a estructuras nerviosas, por lo que requiere especial cuidado.'},
+  {id:'mediana', name:'Vena mediana cubital', cx:540, cy:487, info:'Ubicada en el pliegue del codo, conecta la vena cefálica con la basílica. Frecuentemente utilizada por su accesibilidad y calibre, aunque cercana a la articulación.'},
+  {id:'dorsal', name:'Red venosa dorsal', cx:451, cy:1153, info:'Red venosa visible en el dorso de la mano. Útil en canalizaciones distales, aunque de menor calibre y más sensible al dolor.'},
 ];
 
 const IV_MATERIALS = ['Catéter IV','Torniquete','Guantes','Antiséptico','Gasas','Apósito','Equipo de extensión','Solución IV','Contenedor cortopunzantes'];
@@ -253,12 +253,12 @@ const INJ = {
 };
 
 const ANAT_SITES = [
-  {id:'deltoides', name:'Deltoides', via:'IM', cx:120, cy:110, info:'Sitio de uso frecuente para volúmenes pequeños, en adultos con masa muscular adecuada.'},
-  {id:'ventrogluteo', name:'Región ventroglútea', via:'IM', cx:170, cy:230, info:'Considerada una zona segura por su distancia de estructuras nerviosas y vasculares importantes.'},
-  {id:'vastolateral', name:'Vasto lateral', via:'IM', cx:150, cy:330, info:'Zona recomendada en lactantes y niños pequeños por su desarrollo muscular temprano.'},
-  {id:'brazo', name:'Cara externa del brazo', via:'SC', cx:230, cy:150, info:'Zona habitual para inyección subcutánea de pequeños volúmenes.'},
-  {id:'abdomen', name:'Abdomen', via:'SC', cx:170, cy:190, info:'Zona de absorción más constante, evitando siempre el área periumbilical.'},
-  {id:'antebrazo', name:'Cara anterior del antebrazo', via:'ID', cx:230, cy:230, info:'Zona habitual para pruebas intradérmicas por su fácil visualización y lectura.'},
+  {id:'deltoides', name:'Deltoides', via:'IM', pts:[[688,330]], info:'Sitio de uso frecuente para volúmenes pequeños, en adultos con masa muscular adecuada.'},
+  {id:'ventrogluteo', name:'Región ventroglútea', via:'IM', pts:[[646,689]], info:'Considerada una zona segura por su distancia de estructuras nerviosas y vasculares importantes.'},
+  {id:'vastolateral', name:'Vasto lateral', via:'IM', pts:[[645,856],[377,856]], info:'Zona recomendada en lactantes y niños pequeños por su desarrollo muscular temprano.'},
+  {id:'brazo', name:'Cara externa del brazo', via:'SC', pts:[[700,424]], info:'Zona habitual para inyección subcutánea de pequeños volúmenes.'},
+  {id:'abdomen', name:'Abdomen', via:'SC', pts:[[575,609]], info:'Zona de absorción más constante, evitando siempre el área periumbilical.'},
+  {id:'antebrazo', name:'Cara anterior del antebrazo', via:'ID', pts:[[265,631]], info:'Zona habitual para pruebas intradérmicas por su fácil visualización y lectura.'},
 ];
 
 /* ---- Safety scenarios ---- */
@@ -559,13 +559,11 @@ function renderCaseChoices(listId, fbId, caso, onCorrect){
 /* ================= IV CATHETERIZATION ================= */
 let ivSelectedVein = null;
 function renderIvAnatomy(){
-  const svgPoints = IV_VEINS.map(v=>`<circle class="anat-point" data-id="${v.id}" cx="${v.cx}" cy="${v.cy}" r="9" fill="var(--cyan)"></circle>`).join('');
+  const svgPoints = IV_VEINS.map(v=>`<circle class="anat-point" data-id="${v.id}" cx="${v.cx}" cy="${v.cy}" r="40"><title>${v.name}</title></circle>`).join('');
   document.getElementById('ivAnatomyWrap').innerHTML = `
  <div class="anatomy-svg-box">
- <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
- <path d="M120 30 Q90 120 110 220 Q120 300 90 380" stroke="var(--line)" stroke-width="26" fill="none" stroke-linecap="round"/>
- <path d="M120 30 Q90 120 110 220 Q120 300 90 380" stroke="var(--ink-soft)" stroke-width="1" fill="none" opacity=".25"/>
- <ellipse cx="190" cy="190" rx="30" ry="18" fill="none" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="3 3" opacity=".4"/>
+ <svg viewBox="0 0 1024 1536" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración del miembro superior con el sistema venoso superficial">
+ <image href="assets/img/anatomia-venas-brazo.png" x="0" y="0" width="1024" height="1536"/>
         ${svgPoints}
  </svg>
  </div>
@@ -747,12 +745,11 @@ function paintInjSim(){
 /* ================= ANATOMY EXPLORER ================= */
 function renderAnatExplorer(targetId, filterVia){
   const sites = filterVia ? ANAT_SITES.filter(s=>s.via===filterVia) : ANAT_SITES;
-  const svgPoints = sites.map(s=>`<circle class="anat-point" data-id="${s.id}" cx="${s.cx}" cy="${s.cy}" r="9" fill="var(--cyan)"></circle>`).join('');
+  const svgPoints = sites.map(s=>s.pts.map(pt=>`<circle class="anat-point" data-id="${s.id}" cx="${pt[0]}" cy="${pt[1]}" r="38"><title>${s.name}</title></circle>`).join('')).join('');
   document.getElementById(targetId).innerHTML = `
  <div class="anatomy-svg-box">
- <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
- <circle cx="150" cy="45" r="30" fill="none" stroke="var(--line)" stroke-width="2"/>
- <path d="M150 75 L150 230 M100 100 L150 140 L200 100 M150 230 L100 340 M150 230 L200 340" stroke="var(--line)" stroke-width="22" fill="none" stroke-linecap="round"/>
+ <svg viewBox="0 0 1024 1536" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración anatómica del sistema muscular con los sitios de administración de medicamentos">
+ <image href="assets/img/anatomia-musculos.png" x="0" y="0" width="1024" height="1536"/>
         ${svgPoints}
  </svg>
  </div>
