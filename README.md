@@ -29,3 +29,9 @@ vr-nursing-lab-site/
 
 - Progreso guardado en `localStorage` del navegador (por dispositivo).
 - Paleta 100% verde claro (sidebar y encabezado ya no usan fondo oscuro), sin ningún tono azul, y sin emoji.
+
+## Autoras
+
+- Erika Alexandra Barrera Blanco
+- Gina Marcela Alfonso Inchapié
+- Dana López
