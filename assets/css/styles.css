@@ -51,7 +51,8 @@ a{color:inherit;}
   display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;
   z-index:20;
 }
-.brand{padding:22px 20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);}
+.brand{padding:14px 14px 12px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);}
+.brand-logo{display:block;width:100%;max-width:210px;height:auto;background:#FFFFFF;border-radius:14px;}
 .brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:flex;align-items:center;justify-content:center;flex:none;}
 .brand-mark svg{width:19px;height:19px;}
 .brand-text{font-family:var(--font-head);font-weight:700;font-size:15px;line-height:1.2;color:var(--ink);}
@@ -87,18 +88,24 @@ a{color:inherit;}
 
 /* ============ HOME ============ */
 .hero{
-  background:linear-gradient(155deg, var(--cyan-soft) 0%, var(--surface) 55%, var(--bg) 100%);
+  background:
+    linear-gradient(90deg, rgba(243,249,244,.94) 0%, rgba(243,249,244,.82) 30%, rgba(243,249,244,0) 52%),
+    url('../img/hero-vr-nursing.jpg') right 30% / cover no-repeat;
+  background-color:var(--cyan-soft);
   border:1px solid var(--line);
-  border-radius:20px;padding:52px 40px;color:var(--ink);position:relative;overflow:hidden;margin-bottom:28px;
+  border-radius:20px;padding:56px 40px;min-height:500px;color:#1B2E1F;position:relative;overflow:hidden;margin-bottom:28px;
+  display:flex;flex-direction:column;justify-content:center;
 }
-.hero::before{
-  content:"";position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;
-  background:radial-gradient(circle, rgba(76,175,107,.18), transparent 70%);
+.hero > *{max-width:min(40%, 470px);}
+@media(max-width:820px){
+  .hero{background:linear-gradient(180deg, rgba(243,249,244,.92) 0%, rgba(243,249,244,.88) 100%), url('../img/hero-vr-nursing.jpg') right center / cover no-repeat;min-height:0;padding:36px 22px;}
+  .hero > *{max-width:100%;}
 }
+.hero::before{content:none;}
 .hero-eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--blue);letter-spacing:.05em;margin-bottom:14px;display:flex;align-items:center;gap:8px;position:relative;}
 .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(76,175,107,.18);}
-.hero h1{font-size:clamp(32px,5vw,52px);line-height:1.03;max-width:640px;position:relative;}
-.hero p.lead{margin-top:16px;font-size:16px;color:var(--ink-soft);max-width:520px;line-height:1.6;position:relative;}
+.hero h1{font-size:clamp(32px,4.4vw,52px);line-height:1.03;position:relative;}
+.hero p.lead{margin-top:16px;font-size:16px;color:#3F5A47;line-height:1.6;position:relative;}
 .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;position:relative;}
 .btn{
   border-radius:10px;padding:11px 20px;font-size:14px;font-weight:600;border:1px solid transparent;
