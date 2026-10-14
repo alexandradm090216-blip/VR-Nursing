@@ -817,9 +817,7 @@ function startVRTransition(){
  </div>`).join('');
   }, 1600);
 }
-function pickVRScenario(name){
-  alert('Escenario "'+name+'" seleccionado.\n\nEsta sesión quedaría lista para transmitirse a un cliente XR (Unity + XR Interaction Toolkit) conectado a un visor Meta Quest. Por ahora, continúa tu práctica en el modo web.');
-}
+/* pickVRScenario(name) está definida en assets/js/vr-bridge.js */
 
 /* ================= CLINICAL SIMULATION ================= */
 const SIM_CASE = {
